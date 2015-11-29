@@ -2,7 +2,7 @@ Package.describe({
   name: 'mfactory:admin-lte',
   version: '0.0.2',
   summary: 'AdminLTE dashboard theme',
-  git: 'https://github.com/meteor-factory/meteor-admin-lte.git',
+  git: 'https://github.com/steedos/meteor-admin-lte.git',
   documentation: 'README.md'
 });
 
@@ -20,18 +20,7 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.addFiles([
-    'css/AdminLTE.min.css',
-    'css/skins/skin-black-light.min.css',
-    'css/skins/skin-black.min.css',
-    'css/skins/skin-blue-light.min.css',
-    'css/skins/skin-blue.min.css',
-    'css/skins/skin-green-light.min.css',
-    'css/skins/skin-green.min.css',
-    'css/skins/skin-purple-light.min.css',
-    'css/skins/skin-purple.min.css',
-    'css/skins/skin-red-light.min.css',
-    'css/skins/skin-red.min.css',
-    'css/skins/skin-yellow-light.min.css',
-    'css/skins/skin-yellow.min.css'
-  ], 'client', { isAsset: true });
+    'css/AdminLTE.css',
+    'css/_all-skins.css',
+  ], 'client');
 });

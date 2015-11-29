@@ -17,10 +17,6 @@ Template.AdminLTE.onCreated(function () {
     sidebarMini = this.data.sidebarMini || sidebarMini;
   }
 
-  self.isReady = new ReactiveVar(false);
-  self.style = waitOnCSS(cssUrl());
-  self.skin = waitOnCSS(skinUrl(skin));
-
   fixed && $('body').addClass('fixed');
   sidebarMini && $('body').addClass('sidebar-mini');
   self.removeClasses = function () {
@@ -28,11 +24,6 @@ Template.AdminLTE.onCreated(function () {
     sidebarMini && $('body').removeClass('sidebar-mini');
   }
 
-  this.autorun(function () {
-    if (self.style.ready() && self.skin.ready()) {
-      self.isReady.set(true);
-    }
-  });
 });
 
 Template.AdminLTE.onDestroyed(function () {
@@ -119,64 +110,3 @@ Template.AdminLTE.events({
     }
   }
 });
-
-function cssUrl () {
-  return Meteor.absoluteUrl('packages/mfactory_admin-lte/css/AdminLTE.min.css');
-}
-
-function skinUrl (name) {
-  return Meteor.absoluteUrl(
-    'packages/mfactory_admin-lte/css/skins/skin-' + name + '.min.css');
-}
-
-function waitOnCSS (url, timeout) {
-  var isLoaded = new ReactiveVar(false);
-  timeout = timeout || 5000;
-
-  var link = document.createElement('link');
-  link.type = 'text/css';
-  link.rel = 'stylesheet';
-  link.href = url;
-
-  link.onload = function () {
-    isLoaded.set(true);
-  };
-
-  if (link.addEventListener) {
-    link.addEventListener('load', function () {
-      isLoaded.set(true);
-    }, false);
-  }
-
-  link.onreadystatechange = function () {
-    var state = link.readyState;
-    if (state === 'loaded' || state === 'complete') {
-      link.onreadystatechange = null;
-      isLoaded.set(true);
-    }
-  };
-
-  var cssnum = document.styleSheets.length;
-  var ti = setInterval(function () {
-    if (document.styleSheets.length > cssnum) {
-      isLoaded.set(true);
-      clearInterval(ti);
-    }
-  }, 10);
-
-  setTimeout(function () {
-    isLoaded.set(true);
-  }, timeout);
-
-  $(document.head).append(link);
-
-  return {
-    ready: function () {
-      return isLoaded.get();
-    },
-
-    remove: function () {
-      $('link[href="' + url + '"]').remove();
-    }
-  };
-}
